@@ -2,10 +2,10 @@
 
 <p align="center" >
   <img src="https://raw.githubusercontent.com/etiennemartin/jugglez/master/assets/screenshots/MainScreen.PNG" height=250 alt="Jugglez-MainMenu" title="AFNetworking">
-  <img src="https://raw.githubusercontent.com/etiennemartin/jugglez/master/assets/screenshots/gameplay_easy.PNG" height=250 alt="Jugglez-MainMenu" title="AFNetworking">
-  <img src="https://raw.githubusercontent.com/etiennemartin/jugglez/master/assets/screenshots/gameplay_medium.PNG" height=250 alt="Jugglez-MainMenu" title="AFNetworking">
-  <img src="https://raw.githubusercontent.com/etiennemartin/jugglez/master/assets/screenshots/gameplay_hard.PNG" height=250 alt="Jugglez-MainMenu" title="AFNetworking">
-  <img src="https://raw.githubusercontent.com/etiennemartin/jugglez/master/assets/screenshots/gameplay_expert.PNG" height=250 alt="Jugglez-MainMenu" title="AFNetworking">
+  <img src="https://raw.githubusercontent.com/etiennemartin/jugglez/master/assets/screenshots/gameplay_easy.png" height=250 alt="Jugglez-MainMenu" title="AFNetworking">
+  <img src="https://raw.githubusercontent.com/etiennemartin/jugglez/master/assets/screenshots/gameplay_medium.png" height=250 alt="Jugglez-MainMenu" title="AFNetworking">
+  <img src="https://raw.githubusercontent.com/etiennemartin/jugglez/master/assets/screenshots/gameplay_hard.png" height=250 alt="Jugglez-MainMenu" title="AFNetworking">
+  <img src="https://raw.githubusercontent.com/etiennemartin/jugglez/master/assets/screenshots/gameplay_expert.png" height=250 alt="Jugglez-MainMenu" title="AFNetworking">
 </p>
 
 Jugglez is an open source and free game that I wrote during my spare time in the efforts to learn Swift. The game was an idea I had bouncing around my head and with the introduction of Swift it was a perfect time to learn SpriteKit along with Swift. It wasn't until I showed the game to my friends that I decided to make this game available to the public. So I hope you enjoy the game!
