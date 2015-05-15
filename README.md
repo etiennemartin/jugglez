@@ -26,12 +26,15 @@ The scoring is as simple as it gets. One juggle (ball tap) is equal to one point
 
 # App Store
 
-A link to the App Store will be provided once the game is ready.
+You can download the game on the App Store for free!
+
+[DOWNLOAD](https://itunes.apple.com/us/app/jugglez/id981383123?mt=8)
 
 # Future features
 
 Here's a few future features I may or may not get around to do. If you want to contribute to the game feel free to submit a pull request. All new features and bug fixes will be rolled into the game and credit will be given (within the game).
 
+* iOS 7 support
 * Gameplay music
 * Better sound effects
 * Randomized silly faces
