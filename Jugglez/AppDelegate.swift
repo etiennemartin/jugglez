@@ -17,10 +17,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
 
         // Enable audio category (Allows background sounds)
-        AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient, error: nil)
-        
+        do {
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)
+        }
+        catch {
+            print("Failed to set the category on the Audio Session.")
+        }
+		
         // Initiate game scores
-        var gameScores = GameScores.sharedInstance
+        GameScores.sharedInstance
         return true
     }
 

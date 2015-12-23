@@ -93,7 +93,7 @@ class GameScoresTests: XCTestCase {
         GameScores.sharedInstance.resetScores()
 
         // Validate reset values
-        var strFormat = "Failed to reset %@ score"
+        let strFormat = "Failed to reset %@ score"
         
         for mode in GameMode.allModes {
             XCTAssertEqual(0, GameScores.sharedInstance.getScoreForMode(mode),   String(format:strFormat, mode.description))
@@ -109,10 +109,10 @@ class GameScoresTests: XCTestCase {
         setAllScoreValues(100)
         
         // Test all modes
-        var strFormat = "New %@ high score flag is false and shouldn't be."
+        let strFormat = "New %@ high score flag is false and shouldn't be."
         
         for mode in GameMode.allModes {
-            XCTAssert(GameScores.sharedInstance.isRecordNewForMode(mode),   String(format:"strFormat", mode.description))
+            XCTAssert(GameScores.sharedInstance.isRecordNewForMode(mode),   String(format:strFormat, mode.description))
         }
     }
     
@@ -121,21 +121,21 @@ class GameScoresTests: XCTestCase {
         
         GameScores.sharedInstance.resetScores()
         
-        var strFormat = "Failed to get/set score for mode: %@"
-        var score : Int64 = 10
+        let strFormat = "Failed to get/set score for mode: %@"
+        let score : Int64 = 10
         
         for mode in GameMode.allModes {
             GameScores.sharedInstance.setScoreForMode(mode, score: score)
-            XCTAssertEqual(score, GameScores.sharedInstance.getScoreForMode(GameMode.Easy), String(format:"strFormat", mode.description))
+            XCTAssertEqual(score, GameScores.sharedInstance.getScoreForMode(GameMode.Easy), String(format:strFormat, mode.description))
         }
     }
 
     // Archiving test (Serialization/Deserialization)
     func testArchiving() {
-        
-        var archivePath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as! String
-        archivePath = archivePath.stringByAppendingPathComponent("game_score_testing_archive")
-        
+		
+		var archivePath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0]
+		archivePath = NSURL(fileURLWithPath: archivePath).URLByAppendingPathComponent("game_score_testing_archive").path!
+
         GameScores.sharedInstance.resetScores()
         
         // Set Scores
@@ -151,19 +151,25 @@ class GameScoresTests: XCTestCase {
         XCTAssertTrue(serializeResult, "Failed to serialize GameScores archive")
         
         // Load archive
-        var data = NSData(contentsOfFile: archivePath, options: .DataReadingMappedIfSafe, error: nil)
+        let data = try? NSData(contentsOfFile: archivePath, options: .DataReadingMappedIfSafe)
         let gameScoresInstance = NSKeyedUnarchiver.unarchiveObjectWithData(data!) as! GameScores?
         XCTAssertNotNil(gameScoresInstance, "Failed to create GameScores instance from archive")
         
         // Validate Scores
         i = 0
-        var assertStr = "Score comparison failed during seriliazation for mode: %@"
+        let assertStr = "Score comparison failed during seriliazation for mode: %@"
         for mode in GameMode.allModes {
             XCTAssertEqual(i, gameScoresInstance!.getScoreForMode(mode), String(format:assertStr, mode.description))
             ++i
         }
         
-        let deleteResult = NSFileManager.defaultManager().removeItemAtPath(archivePath, error: nil)
+        let deleteResult: Bool
+        do {
+            try NSFileManager.defaultManager().removeItemAtPath(archivePath)
+            deleteResult = true
+        } catch _ {
+            deleteResult = false
+        }
         XCTAssertTrue(deleteResult, "Failed to clean up after archive test. Testing archive remains")
     }
     

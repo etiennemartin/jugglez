@@ -27,14 +27,14 @@ class Button : SKShapeNode {
     
     func bootstrapInit(frame: CGRect, text: String) {
         
-        var cornerRadius : CGFloat = 10
-        var shadowOffset : CGFloat = 2
+        let cornerRadius : CGFloat = 10
+        let shadowOffset : CGFloat = 2
         
         _button = SKShapeNode(rect: frame, cornerRadius: cornerRadius)
         _button.strokeColor = SKColor.themeLightBackgroundColor()
         _button.fillColor = SKColor.themeLightBackgroundColor()
         
-        var shadow = SKShapeNode(rect: frame, cornerRadius: cornerRadius)
+        let shadow = SKShapeNode(rect: frame, cornerRadius: cornerRadius)
         shadow.strokeColor = _shadowColor
         shadow.fillColor = _shadowColor
         shadow.position.x += shadowOffset
@@ -65,7 +65,7 @@ class Button : SKShapeNode {
     
     var textColor : SKColor {
         get {
-            return _label.fontColor
+            return _label.fontColor!
         }
         set (value) {
             _label.fontColor = value

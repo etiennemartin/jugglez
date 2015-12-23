@@ -45,14 +45,14 @@ func random() -> CGFloat {
 }
 
 // Random value between min and max
-func random(#min: CGFloat, max: CGFloat) -> CGFloat {
+func random(min: CGFloat, max: CGFloat) -> CGFloat {
     return random() * (max - min) + min
 }
 
 // Distance between two CGPoints
 func distanceBetweenPoints(p1: CGPoint, p2: CGPoint) -> CGFloat {
-    var xDst = p2.x - p1.x
-    var yDst = p2.y - p1.y
+    let xDst = p2.x - p1.x
+    let yDst = p2.y - p1.y
     return sqrt((xDst * xDst) + (yDst * yDst))
 }
 

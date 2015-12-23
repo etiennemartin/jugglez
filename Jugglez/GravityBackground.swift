@@ -57,8 +57,8 @@ class GravityBackground : SKNode {
         node.alpha = k_backgroundSpriteAlpha
         addChild(node)
         
-        var position = CGPoint(
-            x: _size.width - random(min:0, _size.width),
+        let position = CGPoint(
+            x: _size.width - random(0, max: _size.width),
             y: _size.height + nodeHeight)
         
         // Drop action

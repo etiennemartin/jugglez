@@ -8,7 +8,7 @@
 
 import SpriteKit
 
-public enum GameMode : Printable {
+public enum GameMode : CustomStringConvertible {
     case None
     case Easy
     case Medium
@@ -51,15 +51,15 @@ class IntroScene: SKScene {
         backgroundColor = SKColor.themeDarkBackgroundColor()
         
         // Title Bg
-        var bgHeight = self.size.height * 0.25
-        var titleBg = SKShapeNode(rect: CGRectMake(0, self.size.height - bgHeight, self.size.width, bgHeight))
+        let bgHeight = self.size.height * 0.25
+        let titleBg = SKShapeNode(rect: CGRectMake(0, self.size.height - bgHeight, self.size.width, bgHeight))
         titleBg.fillColor = SKColor.themeLightBackgroundColor()
         addChild(titleBg)
         
         // Title Label
-        var endPosition = CGPointMake(self.size.width / 2, self.size.height * 0.75 + 20)
-        var startPosition = CGPointMake(self.size.width / 2, self.size.height + 75)
-        var label = SKLabelNode(text: "Jugglez")
+        let endPosition = CGPointMake(self.size.width / 2, self.size.height * 0.75 + 20)
+        let startPosition = CGPointMake(self.size.width / 2, self.size.height + 75)
+        let label = SKLabelNode(text: "Jugglez")
         label.fontName = SKLabelNode.defaultFontName()
         label.fontSize = 80
         label.fontColor = SKColor.themeDarkFontColor()
@@ -67,14 +67,14 @@ class IntroScene: SKScene {
         addChild(label)
         
         // Animate title in
-        var moveAction = SKAction.moveTo(endPosition, duration: 0.75)
+        let moveAction = SKAction.moveTo(endPosition, duration: 0.75)
         moveAction.timingMode = SKActionTimingMode.EaseOut
         label.runAction(moveAction)
         
         // Buttons
-        var position = self.size.height * 0.75
-        var gap = min( ((self.size.height * 0.75) / 5) - 10, 75)
-        var xOffset = self.size.width / 6
+        let position = self.size.height * 0.75
+        let gap = min( ((self.size.height * 0.75) / 5) - 10, 75)
+        let xOffset = self.size.width / 6
         
         addButtonWithLabel(GameMode.Easy,      position: CGPointMake(xOffset, position - gap))
         addButtonWithLabel(GameMode.Medium,    position: CGPointMake(xOffset, position - (gap * 2)))
@@ -85,7 +85,7 @@ class IntroScene: SKScene {
         // Version
         let version = NSBundle.mainBundle().infoDictionary?["CFBundleShortVersionString"] as! String
         let build = NSBundle.mainBundle().infoDictionary?["CFBundleVersion"] as! String
-        var versionLabel = SKLabelNode(fontNamed: SKLabelNode.defaultFontName())
+        let versionLabel = SKLabelNode(fontNamed: SKLabelNode.defaultFontName())
         versionLabel.text = String(format: "%@ (%@)", arguments: [version, build])
         versionLabel.fontColor = SKColor.themeDarkFontColor().colorWithAlphaComponent(0.8)
         versionLabel.fontSize = 16
@@ -96,10 +96,10 @@ class IntroScene: SKScene {
         self.addGitHubLink()
     }
     
-    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         
-        var touch = touches.first as! UITouch
-        var location = touch.locationInNode(self)
+        let touch = touches.first!
+        let location = touch.locationInNode(self)
         
         // Detect touch with buttons
         for button in _buttons {
@@ -132,10 +132,9 @@ class IntroScene: SKScene {
         }
         
         // Detect touch with gitHub icon
-        var gitHubRect : CGRect = _gitHubNode!.calculateAccumulatedFrame()
+        let gitHubRect : CGRect = _gitHubNode!.calculateAccumulatedFrame()
         if (CGRectContainsPoint(gitHubRect, location)) {
-            
-            var url = NSURL(string: _gitHubRepoUrl)
+            let url = NSURL(string: _gitHubRepoUrl)
             UIApplication.sharedApplication().openURL(url!)
         }
     }
@@ -146,7 +145,7 @@ class IntroScene: SKScene {
     
     func addButtonWithLabel(mode:GameMode, position:CGPoint) {
         
-        var nodeButton : Button = Button(frame: CGRectMake(0, 0, self.size.width * 0.67, 50), text: mode.description)
+        let nodeButton : Button = Button(frame: CGRectMake(0, 0, self.size.width * 0.67, 50), text: mode.description)
         nodeButton.position = position
         nodeButton.position.y = -75
         nodeButton.foregroundColor = SKColor.colorForGameMode(mode)
@@ -155,21 +154,21 @@ class IntroScene: SKScene {
         addChild(nodeButton)
         
         // Animate button in
-        var moveAction = SKAction.moveTo(position, duration: 0.75)
+        let moveAction = SKAction.moveTo(position, duration: 0.75)
         moveAction.timingMode = SKActionTimingMode.EaseOut
         nodeButton.runAction(moveAction)
         
-        var modeButton = GameModeButton(mode: mode, node: nodeButton)
+        let modeButton = GameModeButton(mode: mode, node: nodeButton)
         _buttons.append(modeButton)
     }
     
     func addGitHubLink() {
         
-        var dim : CGFloat = 24.0
+        let dim : CGFloat = 24.0
         _gitHubNode = SKSpriteNode(imageNamed: "GitHub-Mark-120px-plus")
         _gitHubNode?.size = CGSizeMake(dim, dim)
-        var startPos = CGPointMake(self.size.width + dim, dim)
-        var endPos = CGPointMake(self.size.width - dim, dim)
+        let startPos = CGPointMake(self.size.width + dim, dim)
+        let endPos = CGPointMake(self.size.width - dim, dim)
         _gitHubNode?.position = startPos
         _gitHubNode?.runAction(SKAction.moveTo(endPos, duration: 0.75))
         

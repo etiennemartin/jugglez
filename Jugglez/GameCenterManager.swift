@@ -47,15 +47,15 @@ class GameCenterManager : NSObject {
     // Authenticates the local user with the Game Center Service
     func authenticateLocalUser() {
 
-        var localPlayer = GKLocalPlayer.localPlayer()
-        localPlayer.authenticateHandler = {(viewController : UIViewController!, error : NSError!) -> Void in
+        let localPlayer = GKLocalPlayer.localPlayer()
+        localPlayer.authenticateHandler = {(viewController : UIViewController?, error : NSError?) -> Void in
             if ((viewController) != nil) {
                 self.authViewController = viewController
                 NSNotificationCenter.defaultCenter().postNotificationName(GameCenterManager.presentGameCenterNotificationViewController, object: self)
             } else if (GKLocalPlayer.localPlayer().authenticated) {
                 self.authViewController = nil // release
                 self.enabled = true
-                println("GameCenter, localPlayer auth: %@", (GKLocalPlayer.localPlayer().authenticated))
+                print("GameCenter, localPlayer auth: %@", (GKLocalPlayer.localPlayer().authenticated))
             }
             
             if (self._delegate != nil) {
@@ -68,7 +68,7 @@ class GameCenterManager : NSObject {
     func reportScore(score:Int64, identifier:String) {
         
         if (enabled == false) {
-            println("Can't submit score, local user isn't authenticated.")
+            print("Can't submit score, local user isn't authenticated.")
             
             if (_delegate != nil) {
                 let err : NSError = NSError(domain: "GameCenterManager", code: -1, userInfo: nil)
@@ -78,13 +78,13 @@ class GameCenterManager : NSObject {
             return
         }
         
-        var scoreReporter : GKScore = GKScore(leaderboardIdentifier: identifier)
+        let scoreReporter : GKScore = GKScore(leaderboardIdentifier: identifier)
         scoreReporter.value = score
-        GKScore.reportScores([scoreReporter], withCompletionHandler: { (error: NSError!) -> Void in
+        GKScore.reportScores([scoreReporter], withCompletionHandler: { (error: NSError?) -> Void in
             if error != nil {
-                println(NSString(format: "Failed to submit score for leaderboard: "+identifier+" err: ", error.localizedDescription))
+                print(NSString(format: "Failed to submit score for leaderboard: "+identifier+" err: ", error!.localizedDescription))
             } else {
-                println("Score submitted for leaderboard:"+identifier)
+                print("Score submitted for leaderboard:"+identifier)
             }
             
             if (self._delegate != nil) {
@@ -98,12 +98,12 @@ class GameCenterManager : NSObject {
 
         let leaderboard = GKLeaderboard()
         leaderboard.identifier = identifier
-        leaderboard.loadScoresWithCompletionHandler { (scores:[AnyObject]!, error: NSError!) -> Void in
+        leaderboard.loadScoresWithCompletionHandler { (scores:[GKScore]?, error: NSError?) -> Void in
             
             if error != nil {
-                println(NSString(format: "Failed to reload scores: %@", error.localizedDescription))
+                print(NSString(format: "Failed to reload scores: %@", error!.localizedDescription))
             } else {
-                println(NSString(format: "Successfully reloaded scores for leaderboard: %@", leaderboard.identifier))
+                print(NSString(format: "Successfully reloaded scores for leaderboard: %@", leaderboard.identifier!))
             }
             
             if (self._delegate != nil) {
@@ -122,12 +122,17 @@ class GameCenterManager : NSObject {
         // and reportAchievementWithCompletionHandler. To avoid this, we fetch the current achievement list once,
         // then cache it and keep it updated with any new achievements.
         if (_earnedAchievementCache == nil) {
-            GKAchievement.loadAchievementsWithCompletionHandler({ (scores:[AnyObject]!, error:NSError!) -> Void in
+            GKAchievement.loadAchievementsWithCompletionHandler({ (achievements:[GKAchievement]?, error:NSError?) -> Void in
+				
+                guard achievements == nil else {
+                    return
+                }
+				
                 if (error == nil) {
                     var tempCache : Dictionary<String, GKAchievement> = Dictionary<String, GKAchievement>()
-                    for s in scores {
-                        var score : GKAchievement = s as! GKAchievement
-                        tempCache[score.identifier] = score
+                    for a in achievements! {
+                        let achievement : GKAchievement = a
+                        tempCache[achievement.identifier!] = achievement
                     }
                     self._earnedAchievementCache = tempCache
                     self.submitAchievement(identifier, percentComplete: percentComplete)
@@ -152,17 +157,17 @@ class GameCenterManager : NSObject {
                 achievement = GKAchievement(identifier: identifier)
                 achievement?.percentComplete = percentComplete
                 // Add achievement to the cache
-                self._earnedAchievementCache![achievement!.identifier] = achievement
+                self._earnedAchievementCache![achievement!.identifier!] = achievement
             }
             
             if (achievement != nil) {
                 // Submit the achievement
-                GKAchievement.reportAchievements([achievement!], withCompletionHandler: { (error:NSError!) -> Void in
+                GKAchievement.reportAchievements([achievement!], withCompletionHandler: { (error:NSError?) -> Void in
                     
                     if error != nil {
-                        println(NSString(format: "Failed to report Achievement: %@", error.localizedDescription))
+                        print(NSString(format: "Failed to report Achievement: %@", error!.localizedDescription))
                     } else {
-                        println(NSString(format: "Successfully reported achievement"))
+                        print(NSString(format: "Successfully reported achievement"))
                     }
                     
                     if (self._delegate != nil) {
@@ -178,12 +183,12 @@ class GameCenterManager : NSObject {
     func resetAchievements() {
 
         _earnedAchievementCache = Dictionary<String, GKAchievement>()
-        GKAchievement.resetAchievementsWithCompletionHandler { (error:NSError!) -> Void in
+        GKAchievement.resetAchievementsWithCompletionHandler { (error:NSError?) -> Void in
 
             if error != nil {
-                println(NSString(format: "Failed to reset Achievements: %@", error.localizedDescription))
+                print(NSString(format: "Failed to reset Achievements: %@", error!.localizedDescription))
             } else {
-                println(NSString(format: "Successfully reset achievements"))
+                print(NSString(format: "Successfully reset achievements"))
             }
             
             if (self._delegate != nil) {
@@ -199,11 +204,15 @@ class GameCenterManager : NSObject {
             return
         }
         
-        GKPlayer.loadPlayersForIdentifiers([playerID], withCompletionHandler: { (players:[AnyObject]!, error:NSError!) -> Void in
-            
+        GKPlayer.loadPlayersForIdentifiers([playerID], withCompletionHandler: { (players:[GKPlayer]?, error:NSError?) -> Void in
+
+            guard players == nil else {
+                return
+            }
+
             var player : GKPlayer? = nil
-            for p in players {
-                let tmpPlayer : GKPlayer = p as! GKPlayer
+            for p in players! {
+                let tmpPlayer : GKPlayer = p
                 if (tmpPlayer.playerID == playerID) {
                     player = tmpPlayer
                     break

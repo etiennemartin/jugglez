@@ -17,13 +17,13 @@ class HighScoreScene: SKScene {
         backgroundColor = SKColor.themeDarkBackgroundColor()
         
         // Title Bg
-        var bgHeight = self.size.height * 0.25
-        var titleBg = SKShapeNode(rect: CGRectMake(0, self.size.height - bgHeight, self.size.width, bgHeight))
+        let bgHeight = self.size.height * 0.25
+        let titleBg = SKShapeNode(rect: CGRectMake(0, self.size.height - bgHeight, self.size.width, bgHeight))
         titleBg.fillColor = SKColor.themeLightBackgroundColor()
         addChild(titleBg)
         
         // Title Label
-        var message = "High Scores"
+        let message = "High Scores"
         let titleLabel = createLabelWithMessage(message)
         titleLabel.fontSize = 60
         titleLabel.position = CGPoint(x: size.width/2, y: size.height * 0.75 + 20)
@@ -42,7 +42,7 @@ class HighScoreScene: SKScene {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         // Clean high score flags
         GameScores.sharedInstance.clearHighScoreFlags()
         
@@ -94,15 +94,15 @@ class HighScoreScene: SKScene {
             let jumpTime = 0.40
             
             // Vertical Jump action
-            var jumpUp : SKAction = SKAction.moveByX(0, y: jumpHeight, duration: jumpTime/2)
+            let jumpUp : SKAction = SKAction.moveByX(0, y: jumpHeight, duration: jumpTime/2)
             jumpUp.timingMode = SKActionTimingMode.EaseOut
-            var jumpDown = SKAction.moveByX(0, y: -jumpHeight, duration: jumpTime/2)
+            let jumpDown = SKAction.moveByX(0, y: -jumpHeight, duration: jumpTime/2)
             jumpDown.timingMode = SKActionTimingMode.EaseOut
-            var jumpVert = SKAction.sequence([jumpUp, jumpDown])
+            let jumpVert = SKAction.sequence([jumpUp, jumpDown])
             
             // Horizontal back and forth action
-            var jumpRight : SKAction = SKAction.moveByX(jumpWidth, y: 0, duration: jumpTime)
-            var jumpLeft : SKAction = SKAction.moveByX(-jumpWidth, y: 0, duration: jumpTime)
+            let jumpRight : SKAction = SKAction.moveByX(jumpWidth, y: 0, duration: jumpTime)
+            let jumpLeft : SKAction = SKAction.moveByX(-jumpWidth, y: 0, duration: jumpTime)
             
             let jumpAction = SKAction.sequence([
                 SKAction.group([jumpVert, jumpRight]),
@@ -118,7 +118,7 @@ class HighScoreScene: SKScene {
     
     // Creates a left aligned label
     private func createLabelWithMessage(message: String) -> SKLabelNode {
-        var label = SKLabelNode()
+        let label = SKLabelNode()
         label.fontColor = SKColor.themeDarkFontColor()
         label.fontName = SKLabelNode.defaultFontName()
         label.text = message
@@ -129,7 +129,7 @@ class HighScoreScene: SKScene {
     
     // Creates a right aligned label
     private func createRightAlignedLabel(message: String) -> SKLabelNode {
-        var label = createLabelWithMessage(message)
+        let label = createLabelWithMessage(message)
         label.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Right
         return label
     }

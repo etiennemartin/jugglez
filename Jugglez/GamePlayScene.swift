@@ -68,17 +68,16 @@ class GamePlayScene: SKScene, SKPhysicsContactDelegate {
         startCountdown(3)
     }
     
-    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         
         var numTouches : Int = 1
-        for uitouch in touches {
+        for touch in touches {
 
             if (numTouches > k_maxNumberConcurrentTouches) {
                 break;
             }
             
-            var touch = uitouch as! UITouch // downcast
-            var location = touch.locationInNode(self)
+            let location = touch.locationInNode(self)
             
             // Determine if it contacts with a ball
             for node in children {
@@ -87,10 +86,10 @@ class GamePlayScene: SKScene, SKPhysicsContactDelegate {
                  
                     let ball = node as! Ball
 
-                    if (distanceBetweenPoints(ball.position, location) < 60) {
+                    if (distanceBetweenPoints(ball.position, p2: location) < 60) {
                         
                         // Determine where we touched the ball, and make it fly in the opposite directions
-                        var deltaX = ball.position.x - location.x
+                        let deltaX = ball.position.x - location.x
                         ball.physicsBody?.velocity = CGVector(dx: deltaX * 75, dy: 1000)
                         _taps++
                         _totalTaps++
@@ -135,7 +134,7 @@ class GamePlayScene: SKScene, SKPhysicsContactDelegate {
         {
             self.runAction(_ballHitWallSoundAction)
             
-            var ball = firstBody.node as! Ball
+            let ball = firstBody.node as! Ball
             ball.collide(nil)
             if (ball.position.y < _ballRadius * 2) {
                 explodeBall(ball)
@@ -148,8 +147,8 @@ class GamePlayScene: SKScene, SKPhysicsContactDelegate {
         {
             self.runAction(_ballHitBallSoundAction)
             
-            var ball1 = firstBody.node as! Ball
-            var ball2 = secondBody.node as! Ball
+            let ball1 = firstBody.node as! Ball
+            let ball2 = secondBody.node as! Ball
             
             ball1.collide(ball2)
             ball2.collide(ball1)
@@ -159,7 +158,7 @@ class GamePlayScene: SKScene, SKPhysicsContactDelegate {
     override func update(currentTime: CFTimeInterval) {
         super.update(currentTime)
 
-        var delta = currentTime - _prevUpdateTime
+        let delta = currentTime - _prevUpdateTime
         _updateDelta += delta
         _prevUpdateTime = currentTime
 
@@ -228,11 +227,11 @@ class GamePlayScene: SKScene, SKPhysicsContactDelegate {
         
         // Remove balls that are out of bounds
         while i < _balls.endIndex {
-            var ball : Ball = _balls[i]
+            let ball : Ball = _balls[i]
             if (ball.position.x < -_ballRadius || ball.position.x > self.size.width + _ballRadius ||
                 ball.position.y < -_ballRadius || ball.position.y > self.size.height + _ballRadius)
             {
-                println("Removing ball that is out of bounds")
+                print("Removing ball that is out of bounds")
                 _balls.removeAtIndex(i)
                 removed++
             }
@@ -241,7 +240,7 @@ class GamePlayScene: SKScene, SKPhysicsContactDelegate {
         
         // Replace ball with a ball in bounds
         if (removed > 0) {
-            for x in 1...removed {
+            for _ in 1...removed {
                 addBall()
             }
         }
@@ -272,7 +271,7 @@ class GamePlayScene: SKScene, SKPhysicsContactDelegate {
     private func startCountdown(number: Int) {
         
         if (number == 0) {
-            for i in 1..._startingNumberOfBalls {
+            for _ in 1..._startingNumberOfBalls {
                 addBall()
             }
             return
@@ -288,12 +287,12 @@ class GamePlayScene: SKScene, SKPhysicsContactDelegate {
         label.position = CGPoint(x: size.width/2, y: size.height/2)
         addChild(label)
         
-        var countInterval = k_countDownNumberInterval
-        var scaleBall = SKAction.scaleTo(4.0, duration: countInterval)
-        var fadeBall = SKAction.fadeOutWithDuration(countInterval)
-        var explodeBall = SKAction.group([fadeBall, scaleBall])
-        var removeBall = SKAction.removeFromParent()
-        var nextLabel = SKAction.runBlock { () -> Void in
+        let countInterval = k_countDownNumberInterval
+        let scaleBall = SKAction.scaleTo(4.0, duration: countInterval)
+        let fadeBall = SKAction.fadeOutWithDuration(countInterval)
+        let explodeBall = SKAction.group([fadeBall, scaleBall])
+        let removeBall = SKAction.removeFromParent()
+        let nextLabel = SKAction.runBlock { () -> Void in
             self.startCountdown(number - 1)
         }
         label.runAction(SKAction.sequence([explodeBall, nextLabel, removeBall]))
@@ -303,12 +302,12 @@ class GamePlayScene: SKScene, SKPhysicsContactDelegate {
     private func addBall() {
         
         // Position at random location
-        var position = CGPoint(
-            x: self.size.width - random(min:0, self.size.width),
+        let position = CGPoint(
+            x: self.size.width - random(0, max:self.size.width),
             y: self.size.height - _ballRadius*2)
         
         // Create Ball
-        var ball = Ball(radius: _ballRadius, color: foregroundColor, position: position)
+        let ball = Ball(radius: _ballRadius, color: foregroundColor, position: position)
         ball.alpha = 0.0
         
         // Fade the ball in
@@ -334,19 +333,19 @@ class GamePlayScene: SKScene, SKPhysicsContactDelegate {
             }
         }
         
-        println(NSString(format: "Balls remaining: %d", _balls.count))
+        print(NSString(format: "Balls remaining: %d", _balls.count))
         
         // Setup explosion animation
-        var scaleBall = SKAction.scaleTo(4.0, duration: 0.25)
-        var fadeBall = SKAction.fadeOutWithDuration(0.25)
-        var explodeBall = SKAction.group([fadeBall, scaleBall])
-        var explodeBalldone = SKAction.removeFromParent()
-        var loseAction = SKAction.runBlock { () -> Void in
+        let scaleBall = SKAction.scaleTo(4.0, duration: 0.25)
+        let fadeBall = SKAction.fadeOutWithDuration(0.25)
+        let explodeBall = SKAction.group([fadeBall, scaleBall])
+        let explodeBalldone = SKAction.removeFromParent()
+        let loseAction = SKAction.runBlock { () -> Void in
             
             // Determine if the game is over
             if (self._balls.count == 0 || self.mode == GameMode.Expert)
             {
-                println("Game over dude!")
+                print("Game over dude!")
                 let reveal = SKTransition.fadeWithColor(self.backgroundColor, duration: 0.75)
                 let scene = GameOverScene(size: self.size, finalScore:self._totalTaps, gameMode:self.mode)
                 scene.backgroundColor = self.backgroundColor

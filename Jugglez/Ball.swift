@@ -25,7 +25,7 @@ class Ball : SKShapeNode {
         physicsBody?.contactTestBitMask = PhysicaCollisionMask.Bounds | PhysicaCollisionMask.Ball
         
         // Visuals
-        var ball = SKShapeNode(circleOfRadius: radius)
+        let ball = SKShapeNode(circleOfRadius: radius)
         ball.strokeColor = SKColor.clearColor()
         ball.fillColor = color
         ball.name = "ball_node"

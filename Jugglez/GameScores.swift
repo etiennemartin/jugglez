@@ -38,13 +38,13 @@ public class GameScores : NSObject, NSCoding, GameCenterManagerDelegate {
             GameCenterManager.sharedInstance.authenticateLocalUser()
             
             let filePath = GameScores.filePath()
-            var data = NSData(contentsOfFile: filePath, options: .DataReadingMappedIfSafe, error: nil)
-            
+            let data = try? NSData(contentsOfFile: filePath, options: NSDataReadingOptions.DataReadingMappedIfSafe)
+			
             if data != nil {
-                println("Loading high scores from archive...")
+                print("Loading high scores from archive...")
                 InstanceStruct.instance =  NSKeyedUnarchiver.unarchiveObjectWithData(data!) as! GameScores?
             } else {
-                println("Creating new high scores...")
+                print("Creating new high scores...")
                 InstanceStruct.instance = GameScores()
             }
             
@@ -212,7 +212,6 @@ public class GameScores : NSObject, NSCoding, GameCenterManagerDelegate {
     }
     
     public func reportGameCenterScore(score:Int64, identifier:String) {
-        
         if (_gameCenterEnabled == false) {
             return
         }
@@ -224,9 +223,8 @@ public class GameScores : NSObject, NSCoding, GameCenterManagerDelegate {
 
     // Generate a path for the game scores file
     private class func filePath() -> String {
-        var documentsPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as! String
-        documentsPath = documentsPath.stringByAppendingPathComponent(k_gameScoreFileName)
-        return documentsPath
+        let documentsPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0]
+        return NSURL(fileURLWithPath: documentsPath).URLByAppendingPathComponent(k_gameScoreFileName).path!
     }
     
     private func reloadLeaderboards() {
@@ -249,13 +247,13 @@ public class GameScores : NSObject, NSCoding, GameCenterManagerDelegate {
         }
         else
         {
-            println("Failed to authenticate with game center err:"+error.debugDescription)
+            print("Failed to authenticate with game center err:"+error.debugDescription)
         }
     }
     
     internal func scoreReported(leaderboardId:String, error:NSError?) {
         if (error != nil) {
-            println("Failed to report "+leaderboardId+" score. err="+error!.debugDescription)
+            print("Failed to report "+leaderboardId+" score. err="+error!.debugDescription)
         }
     }
     
@@ -266,7 +264,7 @@ public class GameScores : NSObject, NSCoding, GameCenterManagerDelegate {
         var gcScore : Int64 = 0
         
         if (leaderBoard.localPlayerScore != nil) {
-            gcScore = leaderBoard.localPlayerScore.value
+            gcScore = leaderBoard.localPlayerScore!.value
         }
         
         if (leaderBoard.identifier == k_easyModeLeaderboardId) {
@@ -289,7 +287,7 @@ public class GameScores : NSObject, NSCoding, GameCenterManagerDelegate {
 
         // Update Game Center with local score if it has changed (offline)
         if (curScore != gcScore && GameCenterManager.sharedInstance.enabled == true) {
-            GameCenterManager.sharedInstance.reportScore(curScore, identifier: leaderBoard.identifier)
+            GameCenterManager.sharedInstance.reportScore(curScore, identifier: leaderBoard.identifier!)
         }
         
     }

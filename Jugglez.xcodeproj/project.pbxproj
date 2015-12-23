@@ -15,7 +15,6 @@
 		5523C7F11A6C612800F53891 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5523C7EF1A6C612800F53891 /* Main.storyboard */; };
 		5523C7F31A6C612800F53891 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5523C7F21A6C612800F53891 /* Images.xcassets */; };
 		5523C7F61A6C612800F53891 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5523C7F41A6C612800F53891 /* LaunchScreen.xib */; };
-		5523C8021A6C612900F53891 /* JugglezTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5523C8011A6C612900F53891 /* JugglezTests.swift */; };
 		5523C80C1A6C688C00F53891 /* MathOps.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5523C80B1A6C688C00F53891 /* MathOps.swift */; };
 		5523C80E1A6CD14E00F53891 /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5523C80D1A6CD14E00F53891 /* GameOverScene.swift */; };
 		55320BBF1AB7EE2100100ECF /* Ball2BallHit.wav in Resources */ = {isa = PBXBuildFile; fileRef = 55320BBB1AB7EE2100100ECF /* Ball2BallHit.wav */; };
@@ -57,7 +56,6 @@
 		5523C7F51A6C612800F53891 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		5523C7FB1A6C612900F53891 /* JugglezTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JugglezTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5523C8001A6C612900F53891 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		5523C8011A6C612900F53891 /* JugglezTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JugglezTests.swift; sourceTree = "<group>"; };
 		5523C80B1A6C688C00F53891 /* MathOps.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MathOps.swift; sourceTree = "<group>"; };
 		5523C80D1A6CD14E00F53891 /* GameOverScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
 		55320BBB1AB7EE2100100ECF /* Ball2BallHit.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = Ball2BallHit.wav; path = Sounds/Ball2BallHit.wav; sourceTree = "<group>"; };
@@ -152,7 +150,6 @@
 			isa = PBXGroup;
 			children = (
 				55D3E8FE1AEC526C00569BB7 /* GameScoresTests.swift */,
-				5523C8011A6C612900F53891 /* JugglezTests.swift */,
 				5523C7FF1A6C612900F53891 /* Supporting Files */,
 			);
 			path = JugglezTests;
@@ -230,7 +227,9 @@
 		5523C7DA1A6C612800F53891 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0610;
+				LastSwiftMigration = 0720;
+				LastSwiftUpdateCheck = 0720;
+				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = "Etienne Martin";
 				TargetAttributes = {
 					5523C7E11A6C612800F53891 = {
@@ -318,7 +317,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				55D3E8FF1AEC526C00569BB7 /* GameScoresTests.swift in Sources */,
-				5523C8021A6C612900F53891 /* JugglezTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -372,6 +370,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -438,6 +437,7 @@
 				INFOPLIST_FILE = Jugglez/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.etiennemartin.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -453,6 +453,7 @@
 				INFOPLIST_FILE = Jugglez/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.etiennemartin.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -473,6 +474,7 @@
 				);
 				INFOPLIST_FILE = JugglezTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.etiennemartin.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Jugglez.app/Jugglez";
 			};
@@ -488,6 +490,7 @@
 				);
 				INFOPLIST_FILE = JugglezTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.etiennemartin.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Jugglez.app/Jugglez";
 			};

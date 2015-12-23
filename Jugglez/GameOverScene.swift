@@ -23,7 +23,7 @@ class GameOverScene: SKScene {
     
     override func didMoveToView(view: SKView) {
         
-        var message = "Game Over!"
+        let message = "Game Over!"
         
         // Main Message
         let label = SKLabelNode()
@@ -80,10 +80,10 @@ class GameOverScene: SKScene {
         
     }
     
-    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         
-        var touch = touches.first as! UITouch
-        var location = touch.locationInNode(self)
+        let touch = touches.first!
+        let location = touch.locationInNode(self)
         var scene : SKScene? = nil
         
         let homeButtonRect = _homeButton!.frame
@@ -105,7 +105,7 @@ class GameOverScene: SKScene {
             self.runAction(_buttonTapSoundAction)
             runAction(SKAction.runBlock() {
                 let reveal = SKTransition.fadeWithColor(self.backgroundColor, duration: 0.75)
-                self.view?.presentScene(scene, transition:reveal)
+                self.view?.presentScene(scene!, transition:reveal)
             })
         }
     }
