@@ -8,9 +8,12 @@
 
 import SpriteKit
 
-class Ball : SKShapeNode {
+class Ball: SKShapeNode {
+    
+    private var _ballColor: SKColor
+    private var _faceNode: SKSpriteNode?
 
-    init(radius:CGFloat, color:SKColor, position:CGPoint) {
+    init(radius: CGFloat, color: SKColor, position: CGPoint) {
         _ballColor = color
         _faceNode = nil
         super.init()
@@ -42,7 +45,7 @@ class Ball : SKShapeNode {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func collide(otherBall : Ball?)
+    func collide(otherBall: Ball?)
     {
         // Show a different face
         runAction(SKAction.sequence([
@@ -56,6 +59,4 @@ class Ball : SKShapeNode {
             ]))
     }
     
-    private var _ballColor : SKColor
-    private var _faceNode : SKSpriteNode?
 }

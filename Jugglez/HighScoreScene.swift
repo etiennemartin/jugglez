@@ -11,6 +11,10 @@ import SpriteKit
 
 class HighScoreScene: SKScene {
     
+    // Last position used to place the high score
+    private var _prevScorePos: CGPoint = CGPointZero
+    private var _buttonTapSoundAction = SKAction.playSoundFileNamed("BallTap.wav", waitForCompletion: false)
+
     override init(size: CGSize) {
         super.init(size: size)
         
@@ -89,20 +93,20 @@ class HighScoreScene: SKScene {
             newBg.addChild(newLabel)
 
             // Jump back and forth (Like a happy kid)
-            let jumpHeight : CGFloat = 8.0
-            let jumpWidth : CGFloat = 8.0
+            let jumpHeight: CGFloat = 8.0
+            let jumpWidth: CGFloat = 8.0
             let jumpTime = 0.40
             
             // Vertical Jump action
-            let jumpUp : SKAction = SKAction.moveByX(0, y: jumpHeight, duration: jumpTime/2)
+            let jumpUp: SKAction = SKAction.moveByX(0, y: jumpHeight, duration: jumpTime/2)
             jumpUp.timingMode = SKActionTimingMode.EaseOut
             let jumpDown = SKAction.moveByX(0, y: -jumpHeight, duration: jumpTime/2)
             jumpDown.timingMode = SKActionTimingMode.EaseOut
             let jumpVert = SKAction.sequence([jumpUp, jumpDown])
             
             // Horizontal back and forth action
-            let jumpRight : SKAction = SKAction.moveByX(jumpWidth, y: 0, duration: jumpTime)
-            let jumpLeft : SKAction = SKAction.moveByX(-jumpWidth, y: 0, duration: jumpTime)
+            let jumpRight: SKAction = SKAction.moveByX(jumpWidth, y: 0, duration: jumpTime)
+            let jumpLeft: SKAction = SKAction.moveByX(-jumpWidth, y: 0, duration: jumpTime)
             
             let jumpAction = SKAction.sequence([
                 SKAction.group([jumpVert, jumpRight]),
@@ -134,8 +138,4 @@ class HighScoreScene: SKScene {
         return label
     }
     
-    // Last position used to place the high score
-    private var _prevScorePos : CGPoint = CGPointZero
-    
-    private var _buttonTapSoundAction = SKAction.playSoundFileNamed("BallTap.wav", waitForCompletion: false)
 }

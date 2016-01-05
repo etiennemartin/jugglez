@@ -11,7 +11,17 @@ import SpriteKit
 
 class GameOverScene: SKScene {
     
-    init(size: CGSize, finalScore:Int64, gameMode:GameMode) {
+    internal var mode: GameMode
+    internal var score: Int64
+    internal var foregroundColor: SKColor = SKColor.themeLightBackgroundColor()
+    
+    private var _homeButton: SKSpriteNode?
+    private var _retryButton: SKSpriteNode?
+    private var _highScoreButton: SKSpriteNode?
+    
+    private var _buttonTapSoundAction = SKAction.playSoundFileNamed("BallTap.wav", waitForCompletion: false)
+    
+    init(size: CGSize, finalScore: Int64, gameMode: GameMode) {
         score = finalScore
         mode = gameMode
         super.init(size: size)
@@ -84,7 +94,7 @@ class GameOverScene: SKScene {
         
         let touch = touches.first!
         let location = touch.locationInNode(self)
-        var scene : SKScene? = nil
+        var scene: SKScene? = nil
         
         let homeButtonRect = _homeButton!.frame
         if (CGRectContainsPoint(homeButtonRect, location)) {
@@ -109,14 +119,4 @@ class GameOverScene: SKScene {
             })
         }
     }
-
-    internal var mode : GameMode
-    internal var score : Int64
-    internal var foregroundColor : SKColor = SKColor.themeLightBackgroundColor()
-
-    private var _homeButton : SKSpriteNode?
-    private var _retryButton : SKSpriteNode?
-    private var _highScoreButton : SKSpriteNode?
-    
-    private var _buttonTapSoundAction = SKAction.playSoundFileNamed("BallTap.wav", waitForCompletion: false)
 }

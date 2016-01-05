@@ -8,10 +8,14 @@
 
 import SpriteKit
 
-class Button : SKShapeNode {
+class Button: SKShapeNode {
+    
+    private var _button: SKShapeNode = SKShapeNode()
+    private var _label: SKLabelNode = SKLabelNode()
+    private let _shadowColor = SKColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.20)
     
     init(size: CGSize, position: CGPoint, text: String) {
-        let frame : CGRect = CGRectMake(position.x, position.y, size.width, size.height)
+        let frame: CGRect = CGRectMake(position.x, position.y, size.width, size.height)
         super.init()
         bootstrapInit(frame, text:text)
     }
@@ -27,8 +31,8 @@ class Button : SKShapeNode {
     
     func bootstrapInit(frame: CGRect, text: String) {
         
-        let cornerRadius : CGFloat = 10
-        let shadowOffset : CGFloat = 2
+        let cornerRadius: CGFloat = 10
+        let shadowOffset: CGFloat = 2
         
         _button = SKShapeNode(rect: frame, cornerRadius: cornerRadius)
         _button.strokeColor = SKColor.themeLightBackgroundColor()
@@ -53,7 +57,7 @@ class Button : SKShapeNode {
         calculateAccumulatedFrame()
     }
     
-    var foregroundColor : SKColor {
+    var foregroundColor: SKColor {
         get {
             return _button.fillColor
         }
@@ -63,7 +67,7 @@ class Button : SKShapeNode {
         }
     }
     
-    var textColor : SKColor {
+    var textColor: SKColor {
         get {
             return _label.fontColor!
         }
@@ -72,7 +76,4 @@ class Button : SKShapeNode {
         }
     }
     
-    private var _button : SKShapeNode = SKShapeNode()
-    private var _label : SKLabelNode = SKLabelNode()
-    private let _shadowColor = SKColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.20)
 }

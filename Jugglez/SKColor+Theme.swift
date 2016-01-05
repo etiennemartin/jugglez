@@ -53,7 +53,7 @@ extension SKColor {
     }
     
     // Returns the proper color for a given GameMode
-    class func colorForGameMode(mode : GameMode) -> SKColor {
+    class func colorForGameMode(mode: GameMode) -> SKColor {
         if (mode == GameMode.Easy) {
             return SKColor.themeEasyModeColor()
         }

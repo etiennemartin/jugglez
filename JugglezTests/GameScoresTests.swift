@@ -35,7 +35,7 @@ class GameScoresTests: XCTestCase {
         // Test initial condition
         XCTAssertEqual(0, GameScores.sharedInstance.easyHighScore, "Initial values for Easy Mode are incorrect")
         
-        for var index : Int64 = 0; index < 1000; index+=100 {
+        for var index: Int64 = 0; index < 1000; index+=100 {
             GameScores.sharedInstance.easyHighScore = index
             XCTAssertEqual(index, GameScores.sharedInstance.easyHighScore, String(format: "failed to set easy score of %d", index))
         }
@@ -49,7 +49,7 @@ class GameScoresTests: XCTestCase {
         // Test initial condition
         XCTAssertEqual(0, GameScores.sharedInstance.mediumHighScore, "Initial values for Medium Mode are incorrect")
         
-        for var index : Int64 = 0; index < 1000; index+=100 {
+        for var index: Int64 = 0; index < 1000; index+=100 {
             GameScores.sharedInstance.mediumHighScore = index
             XCTAssertEqual(index, GameScores.sharedInstance.mediumHighScore, String(format: "failed to set medium score of %d", index))
         }
@@ -63,7 +63,7 @@ class GameScoresTests: XCTestCase {
         // Test initial condition
         XCTAssertEqual(0, GameScores.sharedInstance.hardHighScore, "Initial values for Hard Mode are incorrect")
         
-        for var index : Int64 = 0; index < 1000; index+=100 {
+        for var index: Int64 = 0; index < 1000; index+=100 {
             GameScores.sharedInstance.hardHighScore = index
             XCTAssertEqual(index, GameScores.sharedInstance.hardHighScore, String(format: "failed to set hard score of %d", index))
         }
@@ -77,7 +77,7 @@ class GameScoresTests: XCTestCase {
         // Test initial condition
         XCTAssertEqual(0, GameScores.sharedInstance.expertHighScore, "Initial values for Export Mode are incorrect")
         
-        for var index : Int64 = 0; index < 1000; index+=100 {
+        for var index: Int64 = 0; index < 1000; index+=100 {
             GameScores.sharedInstance.expertHighScore = index
             XCTAssertEqual(index, GameScores.sharedInstance.expertHighScore, String(format: "failed to set expert score of %d", index))
         }
@@ -122,7 +122,7 @@ class GameScoresTests: XCTestCase {
         GameScores.sharedInstance.resetScores()
         
         let strFormat = "Failed to get/set score for mode: %@"
-        let score : Int64 = 10
+        let score: Int64 = 10
         
         for mode in GameMode.allModes {
             GameScores.sharedInstance.setScoreForMode(mode, score: score)
@@ -139,14 +139,14 @@ class GameScoresTests: XCTestCase {
         GameScores.sharedInstance.resetScores()
         
         // Set Scores
-        var i : Int64 = 0
+        var i: Int64 = 0
         for mode in GameMode.allModes {
             GameScores.sharedInstance.setScoreForMode(mode, score: i)
             ++i
         }
         
         // Save archive
-        let encodedData : NSData = NSKeyedArchiver .archivedDataWithRootObject(GameScores.sharedInstance)
+        let encodedData: NSData = NSKeyedArchiver .archivedDataWithRootObject(GameScores.sharedInstance)
         let serializeResult = encodedData.writeToFile(archivePath, atomically: true)
         XCTAssertTrue(serializeResult, "Failed to serialize GameScores archive")
         

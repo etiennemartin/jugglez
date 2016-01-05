@@ -8,7 +8,7 @@
 
 import SpriteKit
 
-public enum GameMode : CustomStringConvertible {
+public enum GameMode: CustomStringConvertible {
     case None
     case Easy
     case Medium
@@ -16,7 +16,7 @@ public enum GameMode : CustomStringConvertible {
     case Expert
     case HighScore
     
-    public var description : String {
+    public var description: String {
         switch self {
         case .None:   return "None"
         case .Easy:   return "Easy"
@@ -32,11 +32,16 @@ public enum GameMode : CustomStringConvertible {
 }
 
 struct GameModeButton {
-    var mode : GameMode
-    var node : Button
+    var mode: GameMode
+    var node: Button
 }
 
 class IntroScene: SKScene {
+    
+    private var _buttonTapSoundAction = SKAction.playSoundFileNamed("BallTap.wav", waitForCompletion: false)
+    private var _gitHubRepoUrl: String = "https://github.com/etiennemartin/jugglez"
+    private var _gitHubNode: SKSpriteNode?
+    private var _buttons: [GameModeButton] = []
     
     override init(size: CGSize) {
         super.init(size: size)
@@ -104,7 +109,7 @@ class IntroScene: SKScene {
         // Detect touch with buttons
         for button in _buttons {
             
-            let buttonRect : CGRect = button.node.calculateAccumulatedFrame()
+            let buttonRect: CGRect = button.node.calculateAccumulatedFrame()
             
             if (CGRectContainsPoint(buttonRect, location)) {
                 
@@ -132,7 +137,7 @@ class IntroScene: SKScene {
         }
         
         // Detect touch with gitHub icon
-        let gitHubRect : CGRect = _gitHubNode!.calculateAccumulatedFrame()
+        let gitHubRect: CGRect = _gitHubNode!.calculateAccumulatedFrame()
         if (CGRectContainsPoint(gitHubRect, location)) {
             let url = NSURL(string: _gitHubRepoUrl)
             UIApplication.sharedApplication().openURL(url!)
@@ -143,9 +148,9 @@ class IntroScene: SKScene {
         super.update(currentTime)
     }
     
-    func addButtonWithLabel(mode:GameMode, position:CGPoint) {
+    func addButtonWithLabel(mode: GameMode, position: CGPoint) {
         
-        let nodeButton : Button = Button(frame: CGRectMake(0, 0, self.size.width * 0.67, 50), text: mode.description)
+        let nodeButton: Button = Button(frame: CGRectMake(0, 0, self.size.width * 0.67, 50), text: mode.description)
         nodeButton.position = position
         nodeButton.position.y = -75
         nodeButton.foregroundColor = SKColor.colorForGameMode(mode)
@@ -164,7 +169,7 @@ class IntroScene: SKScene {
     
     func addGitHubLink() {
         
-        let dim : CGFloat = 24.0
+        let dim: CGFloat = 24.0
         _gitHubNode = SKSpriteNode(imageNamed: "GitHub-Mark-120px-plus")
         _gitHubNode?.size = CGSizeMake(dim, dim)
         let startPos = CGPointMake(self.size.width + dim, dim)
@@ -175,8 +180,4 @@ class IntroScene: SKScene {
         addChild(_gitHubNode!)
     }
     
-    private var _buttonTapSoundAction = SKAction.playSoundFileNamed("BallTap.wav", waitForCompletion: false)
-    private var _gitHubRepoUrl : String = "https://github.com/etiennemartin/jugglez"
-    private var _gitHubNode : SKSpriteNode?
-    private var _buttons : Array<GameModeButton> = Array<GameModeButton>()
 }

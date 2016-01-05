@@ -8,7 +8,7 @@
 
 import SpriteKit
 
-public var PI : Double = 3.14159265359
+public var PI: Double = 3.14159265359
 
 // CGPoint overloads
 func + (left: CGPoint, right: CGPoint) -> CGPoint {
@@ -56,11 +56,11 @@ func distanceBetweenPoints(p1: CGPoint, p2: CGPoint) -> CGFloat {
     return sqrt((xDst * xDst) + (yDst * yDst))
 }
 
-func degreesToRadians(degrees : Double) -> Double {
+func degreesToRadians(degrees: Double) -> Double {
     return degrees * (PI/180.0)
 }
 
-func radiansToDegrees(radians : Double) -> Double {
+func radiansToDegrees(radians: Double) -> Double {
     return radians * (180.0/PI)
 }
 

@@ -22,14 +22,14 @@ private let k_mediumModeLeaderboardId = "com.jugglez.mode.medium"
 private let k_hardModeLeaderboardId   = "com.jugglez.mode.hard"
 private let k_expertModeLeaderboardId = "com.jugglez.mode.expert"
 
-public class GameScores : NSObject, NSCoding, GameCenterManagerDelegate {
+public class GameScores: NSObject, NSCoding, GameCenterManagerDelegate {
     
     // MARK: Singleton access
-    public class var sharedInstance : GameScores {
+    public class var sharedInstance: GameScores {
         
         struct InstanceStruct {
-            static var instanceToken : dispatch_once_t = 0
-            static var instance : GameScores? = nil
+            static var instanceToken: dispatch_once_t = 0
+            static var instance: GameScores? = nil
         }
         
         // Load the data from file at start up.
@@ -133,7 +133,7 @@ public class GameScores : NSObject, NSCoding, GameCenterManagerDelegate {
     }
     
     // High Scores
-    public var easyHighScore : Int64 {
+    public var easyHighScore: Int64 {
         get {
             return _easyHighScore
         }
@@ -146,7 +146,7 @@ public class GameScores : NSObject, NSCoding, GameCenterManagerDelegate {
         }
     }
     
-    public var mediumHighScore : Int64 {
+    public var mediumHighScore: Int64 {
         get {
             return _mediumHighScore
         }
@@ -159,7 +159,7 @@ public class GameScores : NSObject, NSCoding, GameCenterManagerDelegate {
         }
     }
     
-    public var hardHighScore : Int64 {
+    public var hardHighScore: Int64 {
         get {
             return _hardHighScore
         }
@@ -172,7 +172,7 @@ public class GameScores : NSObject, NSCoding, GameCenterManagerDelegate {
         }
     }
     
-    public var expertHighScore : Int64 {
+    public var expertHighScore: Int64 {
         get {
             return _expertHighScore
         }
@@ -207,7 +207,7 @@ public class GameScores : NSObject, NSCoding, GameCenterManagerDelegate {
     
     // Store data
     public func save() {
-        let encodedData : NSData = NSKeyedArchiver .archivedDataWithRootObject(self)
+        let encodedData: NSData = NSKeyedArchiver .archivedDataWithRootObject(self)
         encodedData.writeToFile(GameScores.filePath(), atomically: true)
     }
     
@@ -259,9 +259,9 @@ public class GameScores : NSObject, NSCoding, GameCenterManagerDelegate {
     
     internal func reloadScoresComplete(leaderBoard:GKLeaderboard, error:NSError?) {
 
-        var oldScore : Int64 = 0
-        var curScore : Int64 = 0
-        var gcScore : Int64 = 0
+        var oldScore: Int64 = 0
+        var curScore: Int64 = 0
+        var gcScore: Int64 = 0
         
         if (leaderBoard.localPlayerScore != nil) {
             gcScore = leaderBoard.localPlayerScore!.value
@@ -305,16 +305,16 @@ public class GameScores : NSObject, NSCoding, GameCenterManagerDelegate {
     }
 
     // MARK: Private members
-    private var _newEasyScore : Bool    = false
-    private var _newMediumScore : Bool  = false
-    private var _newHardScore : Bool    = false
-    private var _newExpertScore : Bool  = false
+    private var _newEasyScore: Bool    = false
+    private var _newMediumScore: Bool  = false
+    private var _newHardScore: Bool    = false
+    private var _newExpertScore: Bool  = false
     
-    private var _easyHighScore : Int64    = 0
-    private var _mediumHighScore : Int64  = 0
-    private var _hardHighScore : Int64    = 0
-    private var _expertHighScore : Int64  = 0
+    private var _easyHighScore: Int64    = 0
+    private var _mediumHighScore: Int64  = 0
+    private var _hardHighScore: Int64    = 0
+    private var _expertHighScore: Int64  = 0
     
-    private var _gameCenterEnabled : Bool = true
+    private var _gameCenterEnabled: Bool = true
     
 }

@@ -22,18 +22,21 @@ protocol GameCenterManagerDelegate {
 // MARK: Game Center Manager
 // Game Center Manager takes care of the communication between the app and Apple's
 // Game Center service.
-class GameCenterManager : NSObject {
+class GameCenterManager: NSObject {
+    
+    private var _earnedAchievementCache: [String:GKAchievement]? = [:]
+    private var _delegate: GameCenterManagerDelegate? = nil
     
     override init() {
         super.init()
     }
     
     // Singleton access
-    class var sharedInstance : GameCenterManager {
+    class var sharedInstance: GameCenterManager {
         
         struct InstanceStruct {
-            static var instanceToken : dispatch_once_t = 0
-            static var instance : GameCenterManager? = nil
+            static var instanceToken: dispatch_once_t = 0
+            static var instance: GameCenterManager? = nil
         }
         
         // Load the data from file at start up.
@@ -48,7 +51,7 @@ class GameCenterManager : NSObject {
     func authenticateLocalUser() {
 
         let localPlayer = GKLocalPlayer.localPlayer()
-        localPlayer.authenticateHandler = {(viewController : UIViewController?, error : NSError?) -> Void in
+        localPlayer.authenticateHandler = {(viewController: UIViewController?, error: NSError?) -> Void in
             if ((viewController) != nil) {
                 self.authViewController = viewController
                 NSNotificationCenter.defaultCenter().postNotificationName(GameCenterManager.presentGameCenterNotificationViewController, object: self)
@@ -71,14 +74,14 @@ class GameCenterManager : NSObject {
             print("Can't submit score, local user isn't authenticated.")
             
             if (_delegate != nil) {
-                let err : NSError = NSError(domain: "GameCenterManager", code: -1, userInfo: nil)
+                let err: NSError = NSError(domain: "GameCenterManager", code: -1, userInfo: nil)
                 _delegate?.scoreReported(identifier, error:err)
             }
             
             return
         }
         
-        let scoreReporter : GKScore = GKScore(leaderboardIdentifier: identifier)
+        let scoreReporter: GKScore = GKScore(leaderboardIdentifier: identifier)
         scoreReporter.value = score
         GKScore.reportScores([scoreReporter], withCompletionHandler: { (error: NSError?) -> Void in
             if error != nil {
@@ -129,9 +132,9 @@ class GameCenterManager : NSObject {
                 }
 				
                 if (error == nil) {
-                    var tempCache : Dictionary<String, GKAchievement> = Dictionary<String, GKAchievement>()
+                    var tempCache: [String:GKAchievement] = [:]
                     for a in achievements! {
-                        let achievement : GKAchievement = a
+                        let achievement: GKAchievement = a
                         tempCache[achievement.identifier!] = achievement
                     }
                     self._earnedAchievementCache = tempCache
@@ -146,7 +149,7 @@ class GameCenterManager : NSObject {
         } else {
             
             // Search the list for the ID we're using...
-            var achievement : GKAchievement? = self._earnedAchievementCache![identifier]
+            var achievement: GKAchievement? = self._earnedAchievementCache![identifier]
             if (achievement != nil) {
                 if (achievement?.percentComplete >= 100.0 || achievement?.percentComplete >= percentComplete) {
                     // Achievement was already completed
@@ -182,7 +185,7 @@ class GameCenterManager : NSObject {
     // Reset all cached achievements
     func resetAchievements() {
 
-        _earnedAchievementCache = Dictionary<String, GKAchievement>()
+        _earnedAchievementCache?.removeAll()
         GKAchievement.resetAchievementsWithCompletionHandler { (error:NSError?) -> Void in
 
             if error != nil {
@@ -210,9 +213,9 @@ class GameCenterManager : NSObject {
                 return
             }
 
-            var player : GKPlayer? = nil
+            var player: GKPlayer? = nil
             for p in players! {
-                let tmpPlayer : GKPlayer = p
+                let tmpPlayer: GKPlayer = p
                 if (tmpPlayer.playerID == playerID) {
                     player = tmpPlayer
                     break
@@ -225,24 +228,24 @@ class GameCenterManager : NSObject {
     
     // Name of the NSNotification that is sent when the Game Center services requires the user
     // to authenticate
-    class var presentGameCenterNotificationViewController : String {
+    class var presentGameCenterNotificationViewController: String {
         get { return "present_game_center_notification_view_controller" }
     }
     
     // Determines if the Game Center Manager is ready to be used. (i.e. user is authenticated with the 
     // service
-    var enabled : Bool = false
+    var enabled: Bool = false
     
     // Holds a reference to the UIViewController passed by the Game Center service during authentication
-    var authViewController : UIViewController? = nil
+    var authViewController: UIViewController? = nil
     
     // List of cached achievments
-    var earnedAchievementCache : Dictionary<String, GKAchievement>? {
+    var earnedAchievementCache: [String:GKAchievement]? {
         get {
             return _earnedAchievementCache
         }
     }
-    var delegate : GameCenterManagerDelegate? {
+    var delegate: GameCenterManagerDelegate? {
         get {
             return _delegate;   
         }
@@ -250,8 +253,5 @@ class GameCenterManager : NSObject {
             _delegate = value
         }
     }
-    
-    private var _earnedAchievementCache : Dictionary<String, GKAchievement>? = Dictionary<String, GKAchievement>()
-    private var _delegate : GameCenterManagerDelegate? = nil
     
 }

@@ -14,33 +14,56 @@ import SpriteKit
 // - Medium: 75% gravity
 // - Hard:   100% gravity
 // - Expert: 33% gravity, can't drop a ball
-private let k_baseGravity : CGFloat = -9.8
-private let k_easyModeGravityFactor   : CGFloat = 0.33
-private let k_mediumModeGravityFactor : CGFloat = 0.75
-private let k_hardModeGravityFactor   : CGFloat = 1.00
-private let k_expertModeGravityFactor : CGFloat = 0.33
+private let k_baseGravity: CGFloat = -9.8
+private let k_easyModeGravityFactor  : CGFloat = 0.33
+private let k_mediumModeGravityFactor: CGFloat = 0.75
+private let k_hardModeGravityFactor  : CGFloat = 1.00
+private let k_expertModeGravityFactor: CGFloat = 0.33
 
 // Determines how much the gravity will increase with each ball dropped.
-private let k_gravityIncreaseFactor : CGFloat = 1.0
+private let k_gravityIncreaseFactor: CGFloat = 1.0
 
 // Scene count down variables
-private let k_countDownNumberInterval : NSTimeInterval = 0.65
-private let k_countDownFontSize : CGFloat = 60
+private let k_countDownNumberInterval: NSTimeInterval = 0.65
+private let k_countDownFontSize: CGFloat = 60
 
 // Maximum number of touches allowed at once. This limit prevents users from rapidly
 // tapping the screen with a "wall" of fingers. If done quick enough the user could prevent
 // any of the balls from falling.
-private let k_maxNumberConcurrentTouches : Int  = 2
+private let k_maxNumberConcurrentTouches: Int  = 2
 
 struct PhysicaCollisionMask {
-    static let None   : UInt32 = 0
-    static let All    : UInt32 = UInt32.max
-    static let Ball   : UInt32 = 0b1
-    static let Bounds : UInt32 = 0b10
+    static let None  : UInt32 = 0
+    static let All   : UInt32 = UInt32.max
+    static let Ball  : UInt32 = 0b1
+    static let Bounds: UInt32 = 0b10
 }
 
 class GamePlayScene: SKScene, SKPhysicsContactDelegate {
     
+    internal var foregroundColor: SKColor = SKColor.blackColor()
+    
+    private var _gameMode: GameMode = GameMode.None
+    private var _balls: [Ball] = []
+    private var _ballRadius = CGFloat(15)
+    private let _startingNumberOfBalls = 1
+    private var _taps: Int = 0
+    private var _totalTaps: Int64 = 0
+    
+    private var _prevUpdateTime: CFTimeInterval = 0
+    private var _updateDelta: CFTimeInterval = 0
+    
+    private var _background: GravityBackground? = nil
+    
+    // Sounds
+    private var _explosionSoundAction   = SKAction.playSoundFileNamed("Explosion1.wav", waitForCompletion: false)
+    private var _ballHitBallSoundAction = SKAction.playSoundFileNamed("Ball2BallHit.wav", waitForCompletion: false)
+    private var _ballHitWallSoundAction = SKAction.playSoundFileNamed("Ball2WallHit.wav", waitForCompletion: false)
+    private var _ballTapSoundAction     = SKAction.playSoundFileNamed("BallTap.wav", waitForCompletion: false)
+    private var _tapSoundAction         = SKAction.playSoundFileNamed("Tap.wav", waitForCompletion: false)
+    
+    
+    // MARK: Initializers
     init (size: CGSize, mode:GameMode) {
         super.init(size: size)
         setGameMode(mode)
@@ -68,9 +91,10 @@ class GamePlayScene: SKScene, SKPhysicsContactDelegate {
         startCountdown(3)
     }
     
+    // MARK: Touch Handlers
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         
-        var numTouches : Int = 1
+        var numTouches: Int = 1
         for touch in touches {
 
             if (numTouches > k_maxNumberConcurrentTouches) {
@@ -115,8 +139,8 @@ class GamePlayScene: SKScene, SKPhysicsContactDelegate {
     
     func didBeginContact(contact: SKPhysicsContact) {
         
-        var firstBody : SKPhysicsBody
-        var secondBody : SKPhysicsBody
+        var firstBody: SKPhysicsBody
+        var secondBody: SKPhysicsBody
         
         // Order the first body and second body
         if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask {
@@ -168,6 +192,7 @@ class GamePlayScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
+    // MARK6: Helpers
     private func createBoundingBox() {
         
         // Create Bounding box
@@ -227,7 +252,7 @@ class GamePlayScene: SKScene, SKPhysicsContactDelegate {
         
         // Remove balls that are out of bounds
         while i < _balls.endIndex {
-            let ball : Ball = _balls[i]
+            let ball: Ball = _balls[i]
             if (ball.position.x < -_ballRadius || ball.position.x > self.size.width + _ballRadius ||
                 ball.position.y < -_ballRadius || ball.position.y > self.size.height + _ballRadius)
             {
@@ -247,7 +272,7 @@ class GamePlayScene: SKScene, SKPhysicsContactDelegate {
     }
     
     // Sets the Gravity based on the game mdoe
-    private func gravityForMode(mode:GameMode) -> CGVector {
+    private func gravityForMode(mode: GameMode) -> CGVector {
 
         let baseGravity = k_baseGravity
         
@@ -361,7 +386,7 @@ class GamePlayScene: SKScene, SKPhysicsContactDelegate {
     }
     
     // Sets up all the game play variables based on the mode. All expect for the Gravity.
-    private func setGameMode(mode : GameMode)
+    private func setGameMode(mode: GameMode)
     {
         _gameMode = mode
         
@@ -386,7 +411,7 @@ class GamePlayScene: SKScene, SKPhysicsContactDelegate {
         backgroundColor = SKColor.colorForGameMode(mode)
     }
     
-    internal var mode : GameMode {
+    internal var mode: GameMode {
         get {
             return _gameMode
         }
@@ -394,25 +419,4 @@ class GamePlayScene: SKScene, SKPhysicsContactDelegate {
             self.setGameMode(value)
         }
     }
-    
-    internal var foregroundColor : SKColor = SKColor.blackColor()
-    
-    private var _gameMode : GameMode = GameMode.None
-    private var _balls : Array<Ball> = Array<Ball>()
-    private var _ballRadius = CGFloat(15)
-    private let _startingNumberOfBalls = 1
-    private var _taps : Int = 0
-    private var _totalTaps : Int64 = 0
-    
-    private var _prevUpdateTime : CFTimeInterval = 0
-    private var _updateDelta : CFTimeInterval = 0
-    
-    private var _background : GravityBackground? = nil
-    
-    // Sounds
-    private var _explosionSoundAction   = SKAction.playSoundFileNamed("Explosion1.wav", waitForCompletion: false)
-    private var _ballHitBallSoundAction = SKAction.playSoundFileNamed("Ball2BallHit.wav", waitForCompletion: false)
-    private var _ballHitWallSoundAction = SKAction.playSoundFileNamed("Ball2WallHit.wav", waitForCompletion: false)
-    private var _ballTapSoundAction     = SKAction.playSoundFileNamed("BallTap.wav", waitForCompletion: false)
-    private var _tapSoundAction         = SKAction.playSoundFileNamed("Tap.wav", waitForCompletion: false)
 }
