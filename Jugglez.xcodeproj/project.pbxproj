@@ -190,6 +190,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5523C8051A6C612900F53891 /* Build configuration list for PBXNativeTarget "Jugglez" */;
 			buildPhases = (
+				BCF08AC21C7FE51B0032BC82 /* Swift Lint */,
 				5523C7DE1A6C612800F53891 /* Sources */,
 				5523C7DF1A6C612800F53891 /* Frameworks */,
 				5523C7E01A6C612800F53891 /* Resources */,
@@ -289,6 +290,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		BCF08AC21C7FE51B0032BC82 /* Swift Lint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Swift Lint";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		5523C7DE1A6C612800F53891 /* Sources */ = {

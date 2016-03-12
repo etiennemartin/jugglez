@@ -10,25 +10,24 @@ import Foundation
 import SpriteKit
 
 // Size of the background sprites
-private let k_backgroundSpriteSize: CGFloat = 20
+private let kBackgroundSpriteSize: CGFloat = 20
 // Number of sprites we want on the background
-private let k_backgroundSpriteCount: Int = 30
+private let kBackgroundSpriteCount: Int = 30
 // Base amount of time it takes for the background sprite to drop off screen
-private let k_backgroundSpriteDropTime: NSTimeInterval = 10.0 // sec
+private let kBackgroundSpriteDropTime: NSTimeInterval = 10.0 // sec
 // Alpha channel of the background node
-private let k_backgroundSpriteAlpha: CGFloat = 0.15
+private let kBackgroundSpriteAlpha: CGFloat = 0.15
 
 // This coefficient is used to decrease the time it takes for a background sprite to drop
 // off the screen. The time it takes for a sprite to fall off the screen is calculated as
 // follows
-// time = k_backgroundSpriteDropTime - (k_backgrountGravitycoefficient * number of dropped balls)
-private let k_backgroundGravityCoefficient: NSTimeInterval = 0.5
+// time = kBackgroundSpriteDropTime - (k_backgrountGravitycoefficient * number of dropped balls)
+private let kBackgroundGravityCoefficient: NSTimeInterval = 0.5
 
 class GravityBackground: SKNode {
-    
     private var _dropSpeed: Int
     private var _size: CGSize
-    
+
     init (size: CGSize) {
         _dropSpeed = 0
         _size = size
@@ -36,34 +35,33 @@ class GravityBackground: SKNode {
 
         addBackgroundDroppingSprite()
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     internal func increaseDropSpeed() {
         _dropSpeed++
     }
-    
+
     // Adds a single image to the background that falls. The speed should indicate how strong
     // the gravity in the back is.
     private func addBackgroundDroppingSprite() {
-        
-        let nodeHeight: CGFloat = k_backgroundSpriteSize
+        let nodeHeight: CGFloat = kBackgroundSpriteSize
         let dropTime: NSTimeInterval = NSTimeInterval(
             max(0.25,
-                k_backgroundSpriteDropTime - (k_backgroundGravityCoefficient * NSTimeInterval(_dropSpeed)))
+                kBackgroundSpriteDropTime - (kBackgroundGravityCoefficient * NSTimeInterval(_dropSpeed)))
         )
-        
+
         let node = SKSpriteNode(imageNamed: "bgImage")
-        node.size = CGSizeMake(nodeHeight, nodeHeight)
-        node.alpha = k_backgroundSpriteAlpha
+        node.size = CGSize(width: nodeHeight, height: nodeHeight)
+        node.alpha = kBackgroundSpriteAlpha
         addChild(node)
-        
+
         let position = CGPoint(
             x: _size.width - random(0, max: _size.width),
             y: _size.height + nodeHeight)
-        
+
         // Drop action
         node.position = position
         let rotationAngle: CGFloat = CGFloat(degreesToRadians(1080.0))
@@ -71,16 +69,16 @@ class GravityBackground: SKNode {
         fallAction.timingMode = SKActionTimingMode.EaseIn
         let rotationAction = SKAction.rotateByAngle(rotationAngle, duration: dropTime)
         let fallRotAction = SKAction.group([fallAction, rotationAction])
-        
+
         // Queue next node action
-        let waitAction = SKAction.waitForDuration(dropTime/Double(k_backgroundSpriteCount))
+        let waitAction = SKAction.waitForDuration(dropTime/Double(kBackgroundSpriteCount))
         let addNextAction = SKAction.runBlock { () -> Void in
             self.addBackgroundDroppingSprite()
         }
         let queueNextAction = SKAction.sequence([waitAction, addNextAction])
-        
+
         let dropAction = SKAction.group([fallRotAction, queueNextAction])
-        
+
         node.runAction(SKAction.sequence([
             dropAction,
             SKAction.runBlock({ () -> Void in
@@ -88,5 +86,4 @@ class GravityBackground: SKNode {
             })
         ]))
     }
-
 }

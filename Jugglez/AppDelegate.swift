@@ -19,11 +19,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Enable audio category (Allows background sounds)
         do {
             try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)
-        }
-        catch {
+        } catch {
             print("Failed to set the category on the Audio Session.")
         }
-		
+
         // Initiate game scores
         GameScores.sharedInstance
         return true
@@ -50,7 +49,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-
-
 }
-

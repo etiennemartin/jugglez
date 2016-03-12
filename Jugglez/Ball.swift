@@ -9,7 +9,7 @@
 import SpriteKit
 
 class Ball: SKShapeNode {
-    
+
     private var _ballColor: SKColor
     private var _faceNode: SKSpriteNode?
 
@@ -18,15 +18,15 @@ class Ball: SKShapeNode {
         _faceNode = nil
         super.init()
         self.position = position
- 
-        //Physics
+
+        // Physics
         physicsBody = SKPhysicsBody(circleOfRadius: radius)
         physicsBody?.dynamic = true
         physicsBody?.affectedByGravity = true
         physicsBody?.usesPreciseCollisionDetection = true
         physicsBody?.categoryBitMask = PhysicaCollisionMask.Ball
         physicsBody?.contactTestBitMask = PhysicaCollisionMask.Bounds | PhysicaCollisionMask.Ball
-        
+
         // Visuals
         let ball = SKShapeNode(circleOfRadius: radius)
         ball.strokeColor = SKColor.clearColor()
@@ -34,9 +34,9 @@ class Ball: SKShapeNode {
         ball.name = "ball_node"
         addChild(ball)
         calculateAccumulatedFrame()
-        
+
         _faceNode = SKSpriteNode(imageNamed: "faceSmile")
-        _faceNode?.size = CGSizeMake(radius*2, radius*2)
+        _faceNode?.size = CGSize(width: radius*2, height: radius*2)
         _faceNode?.name = "face_node"
         addChild(_faceNode!)
     }
@@ -44,9 +44,8 @@ class Ball: SKShapeNode {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    func collide(otherBall: Ball?)
-    {
+
+    func collide(otherBall: Ball?) {
         // Show a different face
         runAction(SKAction.sequence([
             SKAction.runBlock() {
@@ -58,5 +57,4 @@ class Ball: SKShapeNode {
             }
             ]))
     }
-    
 }

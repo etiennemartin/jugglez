@@ -8,7 +8,7 @@
 
 import SpriteKit
 
-public var PI: Double = 3.14159265359
+public let PI: Double = 3.14159265359
 
 // CGPoint overloads
 func + (left: CGPoint, right: CGPoint) -> CGPoint {
@@ -29,11 +29,10 @@ func / (point: CGPoint, scalar: CGFloat) -> CGPoint {
 
 // CGPoint extension
 extension CGPoint {
-    
     func length() -> CGFloat {
         return sqrt(x * x + y * y)
     }
-    
+
     func normalized() -> CGPoint {
         return self / length()
     }
@@ -63,4 +62,3 @@ func degreesToRadians(degrees: Double) -> Double {
 func radiansToDegrees(radians: Double) -> Double {
     return radians * (180.0/PI)
 }
-

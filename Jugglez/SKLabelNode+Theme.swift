@@ -9,10 +9,8 @@
 import SpriteKit
 
 extension SKLabelNode {
-    
     // Default font that will be used across the whole application
     class func defaultFontName() -> String {
         return "Futura-CondensedMedium"
     }
-    
 }
